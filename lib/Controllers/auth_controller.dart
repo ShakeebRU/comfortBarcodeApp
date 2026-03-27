@@ -27,9 +27,10 @@ class AuthController with ChangeNotifier {
     BuildContext context,
     String email,
     String password,
+    String baseUrl,
   ) async {
     setLoading(true);
-    String url = ApiLinks.userlogin;
+    String url = baseUrl + ApiLinks.userlogin;
     print(url);
     final response = await http.post(
       Uri.parse(url),
@@ -52,6 +53,9 @@ class AuthController with ChangeNotifier {
           jsonDecode(response.body),
         );
         await Preferences.init().then((onValue) => onValue.saveUser(userData));
+        await Preferences.init().then(
+          (onValue) => onValue.saveInternetAddress(baseUrl),
+        );
         // await Preferences.init().then((onValue) => onValue.saveisErp(isERP));
         setLoading(false);
 

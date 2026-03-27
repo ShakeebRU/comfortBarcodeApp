@@ -1,5 +1,6 @@
 import 'package:comfortbarcode/Controllers/setup_controller.dart';
 import 'package:comfortbarcode/Utils/utils.dart';
+import 'package:comfortbarcode/constants/constants.dart';
 import 'package:comfortbarcode/views/screens/ogp_detail_list_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -15,6 +16,7 @@ class OgpMainListScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: true,
+        backgroundColor: Constants.secondaryColor,
         title: const Text("OGP List"),
       ),
       body: ListView.builder(
@@ -53,6 +55,7 @@ class OgpMainListScreen extends StatelessWidget {
                     offset: const Offset(0, 3),
                   ),
                 ],
+                border: Border.all(color: Constants.secondaryColor),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -68,34 +71,44 @@ class OgpMainListScreen extends StatelessWidget {
                           fontSize: 16,
                         ),
                       ),
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 10,
-                          vertical: 4,
-                        ),
-                        decoration: BoxDecoration(
-                          color: Colors.blue.shade50,
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        child: Text(
-                          item.status,
-                          style: const TextStyle(
-                            color: Colors.blue,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
+                      // Container(
+                      //   padding: const EdgeInsets.symmetric(
+                      //     horizontal: 10,
+                      //     vertical: 4,
+                      //   ),
+                      //   decoration: BoxDecoration(
+                      //     color: Colors.blue.shade50,
+                      //     borderRadius: BorderRadius.circular(20),
+                      //   ),
+                      //   child: Text(
+                      //     item.status,
+                      //     style: const TextStyle(
+                      //       color: Colors.blue,
+                      //       fontWeight: FontWeight.bold,
+                      //     ),
+                      //   ),
+                      // ),
                     ],
                   ),
 
-                  const SizedBox(height: 8),
+                  const SizedBox(height: 4),
 
                   /// Party
                   Text(
-                    "Party: ${item.partyName}",
+                    "${item.partyName}",
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Constants.secondaryColor,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+
+                  /// Date
+                  Text(
+                    "Date: ${Utils.formatDateString(item.transactionDate)}",
                     style: const TextStyle(fontSize: 14),
                   ),
-
                   const SizedBox(height: 4),
 
                   /// Vehicle
@@ -109,14 +122,6 @@ class OgpMainListScreen extends StatelessWidget {
                   /// Driver
                   Text(
                     "Driver: ${item.driverName} (${item.driverContactNo})",
-                    style: const TextStyle(fontSize: 14),
-                  ),
-
-                  const SizedBox(height: 4),
-
-                  /// Date
-                  Text(
-                    "Date: ${item.transactionDate}",
                     style: const TextStyle(fontSize: 14),
                   ),
                 ],

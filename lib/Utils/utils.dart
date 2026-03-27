@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:intl/intl.dart' show DateFormat;
 import 'package:provider/provider.dart';
 import '../Constants/constants.dart';
 
@@ -106,6 +107,15 @@ class Utils {
       return "$days : $hours : $minutes";
     } catch (e) {
       return "00 : 00 : 00 ";
+    }
+  }
+
+  static String formatDateString(String dateTimeString) {
+    try {
+      DateTime parsedDate = DateTime.parse(dateTimeString);
+      return DateFormat("dd MMM yyyy").format(parsedDate);
+    } catch (e) {
+      return "Invalid Date";
     }
   }
 

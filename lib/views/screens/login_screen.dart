@@ -1,3 +1,5 @@
+import 'package:comfortbarcode/Utils/preferences.dart';
+import 'package:comfortbarcode/constants/apilinks.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -16,7 +18,74 @@ class _LoginPageState extends State<LoginPage> {
   bool visibility = false;
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  TextEditingController wanController = TextEditingController();
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    handleServerAddress();
+  }
+
+  void handleServerAddress() async {
+    String? baseUrl = await Preferences.init().then(
+      (onValue) => onValue.getInternetAddress(),
+    );
+    if (baseUrl != null && baseUrl.isNotEmpty) {
+      wanController.text = baseUrl;
+    } else {
+      wanController.text = ApiLinks.base;
+    }
+  }
+
   final _formKey = GlobalKey<FormState>();
+
+  void _showNetworkInputDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('Enter Network Details'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextField(
+                controller: wanController,
+                decoration: InputDecoration(hintText: 'Enter Internet Address'),
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () async {
+                // if (wanController.text.isNotEmpty) {
+                //   final controller = Provider.of<AuthController>(
+                //     context,
+                //     listen: false,
+                //   );
+                //   await controller.login(
+                //     context,
+                //     emailController.text,
+                //     passwordController.text,
+                //     wanController.text,
+                //     // isErp,
+                //   );
+                // }
+                Navigator.of(context).pop(); // Close the dialog
+              },
+              child: Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   // bool isErp = false;
   @override
   Widget build(BuildContext context) {
@@ -43,6 +112,26 @@ class _LoginPageState extends State<LoginPage> {
                           color: Colors.black,
                           fontSize: 30,
                           fontFamily: GoogleFonts.sedgwickAve().fontFamily,
+                        ),
+                      ),
+                      SizedBox(height: 20),
+                      GestureDetector(
+                        onTap: () {
+                          _showNetworkInputDialog(context);
+                        },
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(Icons.online_prediction),
+                            SizedBox(width: 10),
+                            Text(
+                              "Change Sever Address",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 18,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                       SizedBox(height: 20),
@@ -86,61 +175,7 @@ class _LoginPageState extends State<LoginPage> {
                         },
                       ),
                       SizedBox(height: 20),
-                      // Row(
-                      //   mainAxisAlignment: MainAxisAlignment.start,
-                      //   children: [
-                      //     Padding(
-                      //       padding: const EdgeInsets.only(left: 10.0),
-                      //       child: Text(
-                      //         "Forget Password",
-                      //         textAlign: TextAlign.left,
-                      //         style: TextStyle(
-                      //           fontSize: 15,
-                      //           color: Colors.black,
-                      //         ),
-                      //       ),
-                      //     ),
-                      //   ],
-                      // ),
-                      // SizedBox(height: 20),
-                      // Row(
-                      //   mainAxisAlignment: MainAxisAlignment.center,
-                      //   children: [
-                      //     Text(
-                      //       'Employee',
-                      //       style: TextStyle(
-                      //         fontSize: 16,
-                      //         color: isErp ? Colors.black : Colors.black,
-                      //         fontWeight: !isErp
-                      //             ? FontWeight.bold
-                      //             : FontWeight.normal,
-                      //       ),
-                      //     ),
-                      //     Switch(
-                      //       value: isErp,
-                      //       activeColor: Colors.black,
-                      //       onChanged: (value) {
-                      //         setState(() {
-                      //           isErp = value;
-                      //         });
-                      //         // You can use isErp here as true/false
-                      //         print('isErp: $isErp');
-                      //       },
-                      //     ),
-                      //     Text(
-                      //       'Purchaser',
-                      //       style: TextStyle(
-                      //         fontSize: 16,
-                      //         color: isErp ? Colors.black : Colors.black,
-                      //         fontWeight: isErp
-                      //             ? FontWeight.bold
-                      //             : FontWeight.normal,
-                      //       ),
-                      //     ),
-                      //   ],
-                      // ),
-                      // SizedBox(height: 20),
-                      // Spacer(),
+
                       ElevatedButton(
                         style: ButtonStyle(
                           backgroundColor: WidgetStatePropertyAll(Colors.black),
@@ -158,12 +193,19 @@ class _LoginPageState extends State<LoginPage> {
                         onPressed: () async {
                           if (_formKey.currentState!.validate()) {
                             // print("is erp 1 : ${isErp}");
-                            await controller.login(
-                              context,
-                              emailController.text,
-                              passwordController.text,
-                              // isErp,
-                            );
+                            if (wanController.text.isNotEmpty) {
+                              final controller = Provider.of<AuthController>(
+                                context,
+                                listen: false,
+                              );
+                              await controller.login(
+                                context,
+                                emailController.text,
+                                passwordController.text,
+                                wanController.text,
+                                // isErp,
+                              );
+                            }
                           }
                         },
                         child: controller.isLoading

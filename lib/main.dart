@@ -7,8 +7,6 @@ import 'Controllers/setup_controller.dart';
 import 'constants/constants.dart';
 import 'views/splash.dart';
 
-// anuj
-// anuj@123
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(
@@ -68,6 +66,6 @@ class _MyAppState extends State<MyApp> {
   }
 }
 
-// manager
-// nazeer
-// tayyab
+// login
+// admin
+// admin

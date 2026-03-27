@@ -30,15 +30,19 @@ class FunctionalityController with ChangeNotifier {
     required int colorCode,
     required String colorName,
     required int packingID,
+    required String barcode,
   }) async {
     try {
       UserResponseModel? user = await Preferences.init().then(
         (onValue) => onValue.getUser(),
       );
+      String? baseUrl = await Preferences.init().then(
+        (onValue) => onValue.getInternetAddress(),
+      );
 
       Position? pos = await Utils.getCurrentLocation();
       debugPrint(
-        "${ApiLinks.savebarcodelocation}?userid=${user!.logindata.userId}",
+        "${baseUrl! + ApiLinks.savebarcodelocation}?userid=${user!.logindata.userId}",
       );
       Uri uri = Uri.parse(ApiLinks.savebarcodelocation);
       final Map<String, dynamic> body = {
@@ -53,6 +57,7 @@ class FunctionalityController with ChangeNotifier {
         "colorCode": colorCode,
         "colorName": colorName,
         "packingID": packingID,
+        "barcode": barcode,
       };
       debugPrint(jsonEncode(body));
       final response = await http.post(
@@ -76,7 +81,7 @@ class FunctionalityController with ChangeNotifier {
             message: "Data Saved successfully",
             backgroundColor: Colors.grey,
           );
-          Navigator.popUntil(context, (route) => route.isFirst);
+          // Navigator.popUntil(context, (route) => route.isFirst);
           return null;
         } else {
           setLoading(false);
@@ -102,7 +107,7 @@ class FunctionalityController with ChangeNotifier {
       print("error : $error");
       setLoading(false);
     }
-    Navigator.pop(context);
+    // Navigator.pop(context);
     return null;
   }
 }

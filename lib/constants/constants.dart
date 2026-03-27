@@ -3,8 +3,8 @@ import 'package:google_fonts/google_fonts.dart';
 
 class Constants {
   static Color primaryColor = Colors.white;
-  static Color secondaryColor = Colors.green;
-  static Color secondaryColor2 = const Color.fromARGB(255, 139, 247, 118);
+  static Color secondaryColor = Colors.blueAccent;
+  static Color secondaryColor2 = Colors.blueAccent;
   static Color textColor = const Color(0xFF171F24);
   static Color onBoardinginstructionColor = const Color(0xFF001833);
   static Color textPrimaryLightColor = Colors.white;

@@ -40,6 +40,23 @@ class Preferences {
     shared.remove('isErp');
   }
 
+  String? getInternetAddress() {
+    if (shared.getString("baseUrl") != null) {
+      var val = shared.getString("baseUrl");
+
+      return val;
+    }
+    return null;
+  }
+
+  Future saveInternetAddress(String val) async {
+    shared.setString("baseUrl", val);
+  }
+
+  Future deleteInternetAddress() async {
+    shared.remove('baseUrl');
+  }
+
   static Future<Preferences> init() =>
       SharedPreferences.getInstance().then((value) => Preferences(value));
 }

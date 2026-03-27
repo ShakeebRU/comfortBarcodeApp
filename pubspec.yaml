@@ -43,6 +43,7 @@ dependencies:
   dropdown_search: ^6.0.2
   geolocator: ^14.0.2
   mobile_scanner: ^7.2.0
+  intl: ^0.20.2
 
 dev_dependencies:
   flutter_test:

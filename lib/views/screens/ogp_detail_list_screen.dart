@@ -1,17 +1,22 @@
+import 'package:comfortbarcode/constants/constants.dart';
 import 'package:comfortbarcode/models/ogp_detail_list_response_model.dart';
-import 'package:comfortbarcode/views/screens/scaning_barcode_screen.dart';
+import 'package:comfortbarcode/views/screens/ogp_detail_entery_list_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../../Controllers/setup_controller.dart' show SetupController;
+import '../../Utils/utils.dart';
 
 class OgpDetailScreen extends StatelessWidget {
   final List<OgpDetailModel> response;
 
   const OgpDetailScreen({super.key, required this.response});
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: true,
+        backgroundColor: Constants.secondaryColor,
         title: const Text("OGP Detail"),
       ),
       body: ListView.builder(
@@ -21,18 +26,35 @@ class OgpDetailScreen extends StatelessWidget {
           final item = response[index];
 
           return GestureDetector(
-            onTap: () {
-              Navigator.push(
+            onTap: () async {
+              Utils.showLoadingDialog(context);
+              final cont = Provider.of<SetupController>(context, listen: false);
+
+              final apiResponseModel = await cont.getOgpDetailSingle(
                 context,
-                MaterialPageRoute(
-                  builder: (context) {
-                    return BarcodeScannerScreen(
-                      itemCode: item.itemCode,
-                      data: item,
-                    );
-                  },
-                ),
+                item.branchCode.toString(),
+                item.formNo.toString(),
+                item.srNo.toString(),
               );
+
+              Navigator.pop(context);
+              if (apiResponseModel == null) {
+                Utils.showCustomSnackbar(
+                  context: context,
+                  title: "Error",
+                  message: "No detail record found.",
+                  backgroundColor: Colors.grey,
+                );
+              } else {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return OgpDetailEntryScreen(response: apiResponseModel!);
+                    },
+                  ),
+                );
+              }
             },
             child: Container(
               margin: const EdgeInsets.only(bottom: 12),
@@ -56,14 +78,7 @@ class OgpDetailScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        "Item: ${item.itemCode}",
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16,
-                        ),
-                      ),
-                      Text(
-                        "SR: ${item.srNo}",
+                        "${item.itemDescription}",
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 14,
@@ -73,10 +88,19 @@ class OgpDetailScreen extends StatelessWidget {
                   ),
 
                   const SizedBox(height: 8),
+                  Text(
+                    "${item.itemCode}",
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                    ),
+                  ),
+
+                  const SizedBox(height: 4),
 
                   /// Quantity
                   Text(
-                    "Qty: ${item.qty ?? 0}",
+                    "Qty: ${item.qty}",
                     style: const TextStyle(fontSize: 14),
                   ),
 
@@ -90,61 +114,24 @@ class OgpDetailScreen extends StatelessWidget {
 
                   const SizedBox(height: 4),
 
-                  /// Bags
-                  Text(
-                    "Bags: ${item.bags ?? 0}",
-                    style: const TextStyle(fontSize: 14),
-                  ),
-
                   const Divider(height: 20),
 
-                  /// Weights
+                  /// Bags
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text("Gross: ${item.grossWeight}"),
-                      Text("Net: ${item.netWeight}"),
-                      Text("Actual: ${item.actualWeight}"),
-                    ],
-                  ),
-
-                  const SizedBox(height: 8),
-
-                  /// Purpose
-                  Text(
-                    "Purpose: ${item.purposeID}",
-                    style: const TextStyle(fontSize: 14),
-                  ),
-
-                  const SizedBox(height: 8),
-
-                  /// GRN Status
-                  Row(
-                    children: [
-                      const Text("Added to GRN: "),
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 8,
-                          vertical: 4,
-                        ),
-                        decoration: BoxDecoration(
-                          color: item.isAddedToGRN
-                              ? Colors.green.shade100
-                              : Colors.red.shade100,
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        child: Text(
-                          item.isAddedToGRN ? "YES" : "NO",
-                          style: TextStyle(
-                            color: item.isAddedToGRN
-                                ? Colors.green
-                                : Colors.red,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
+                      Text(
+                        "Scanned Bags: ${item.scannedBags}",
+                        style: const TextStyle(fontSize: 14),
+                      ),
+                      Text(
+                        "Scanned Weight: ${item.scannedWeight}",
+                        style: const TextStyle(fontSize: 14),
                       ),
                     ],
                   ),
+
+                  const SizedBox(height: 8),
                 ],
               ),
             ),

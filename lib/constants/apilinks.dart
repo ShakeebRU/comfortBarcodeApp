@@ -1,13 +1,14 @@
 class ApiLinks {
   // api path and links
-  static const String base = 'http://comfortapi.cabcabit.com/api';
-  static const String userlogin = "$base/Login/userlogin";
+  static const String base = 'http://comfortapi.cabcabit.';
+  static const String userlogin = "/api/Login/userlogin";
 
   // setup api
   static const String getitemsdescriptionlist =
-      "$base/Setup/getitemsdescriptionlist";
-  static const String getogpmainlist = "$base/OGP/getogpmainlist";
-  static const String getogpdetaillist = "$base/OGP/getogpdetaillist";
-  static const String getbarcodedetail = "$base/OGP/getbarcodedetail";
-  static const String savebarcodelocation = "$base/OGP/savebarcodelocation";
+      "/Setup/getitemsdescriptionlist";
+  static const String getogpmainlist = "/api/OGP/getogpmainlist";
+  static const String getogpdetaillist = "/api/OGP/getogpdetaillist";
+  static const String getbarcodedetail = "/api/OGP/getbarcodedetail";
+  static const String savebarcodelocation = "/api/OGP/savebarcodelocation";
+  static const String getogpdetailsingle = "/api/OGP/getogpdetailsingle";
 }

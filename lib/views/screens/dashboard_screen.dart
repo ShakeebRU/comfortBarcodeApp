@@ -2,6 +2,7 @@ import 'package:comfortbarcode/Controllers/setup_controller.dart';
 import 'package:comfortbarcode/Utils/preferences.dart';
 import 'package:comfortbarcode/constants/constants.dart';
 import 'package:comfortbarcode/utils/utils.dart';
+import 'package:comfortbarcode/views/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -26,11 +27,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
           actions: [
             IconButton(
               onPressed: () async {
-                await Preferences.init().then(
-                  (onValue) => onValue.deleteUser(),
-                );
+                await Preferences.init().then((onValue) async {
+                  await onValue.deleteUser();
+                  // await onValue.deleteInternetAddress();
+                });
                 Navigator.of(context).pushAndRemoveUntil(
-                  MaterialPageRoute(builder: (_) => DashboardScreen()),
+                  MaterialPageRoute(builder: (_) => LoginPage()),
                   (route) => false, // removes all previous routes
                 );
               },
