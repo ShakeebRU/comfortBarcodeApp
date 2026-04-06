@@ -383,7 +383,7 @@ class _BarcodeScannerScreenState extends State<BarcodeScannerScreen> {
                       });
                     },
                   ),
-                  const Text("Scanner"),
+                  const Text("Camera"),
                 ],
               ),
               Row(
@@ -402,7 +402,7 @@ class _BarcodeScannerScreenState extends State<BarcodeScannerScreen> {
                       });
                     },
                   ),
-                  const Text("Manual"),
+                  const Text("Scanner"),
                 ],
               ),
             ],

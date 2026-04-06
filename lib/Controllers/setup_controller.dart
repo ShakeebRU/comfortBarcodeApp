@@ -10,26 +10,35 @@ import '../constants/apilinks.dart';
 
 class SetupController with ChangeNotifier {
   List<OgpMainModel> ogpMainList = [];
-  Future<List<OgpMainModel>> getOgpMainList(BuildContext context) async {
+  Future<List<OgpMainModel>> getOgpMainList(
+    BuildContext context,
+    String? partyName,
+    int? formNo,
+  ) async {
     String? baseUrl = await Preferences.init().then(
       (onValue) => onValue.getInternetAddress(),
     );
     ogpMainList = [];
-    debugPrint(baseUrl! + ApiLinks.getogpmainlist);
-    Uri uri = Uri.parse(baseUrl! + ApiLinks.getogpmainlist);
-    try {
-      http.Response response = await http.get(uri);
-      debugPrint("status code == ${response.statusCode}");
-      if (response.statusCode == 200) {
-        OgpMainListResponseModel responseData =
-            OgpMainListResponseModel.fromJson(jsonDecode(response.body));
-        ogpMainList = responseData.listdata;
-        print(ogpMainList.length);
-        notifyListeners();
-      }
-    } catch (error) {
-      print("error : $error");
+    debugPrint(
+      "${baseUrl!}${ApiLinks.getogpmainlist}?partyname=$partyName&formno=${formNo ?? 0}",
+    );
+    Uri uri = Uri.parse(
+      "${baseUrl!}${ApiLinks.getogpmainlist}?partyname=$partyName&formno=${formNo ?? 0}",
+    );
+    // try {
+    http.Response response = await http.get(uri);
+    debugPrint("status code == ${response.statusCode}");
+    if (response.statusCode == 200) {
+      OgpMainListResponseModel responseData = OgpMainListResponseModel.fromJson(
+        jsonDecode(response.body),
+      );
+      ogpMainList = responseData.listdata;
+      print(ogpMainList.length);
+      notifyListeners();
     }
+    // } catch (error) {
+    //   print("error : $error");
+    // }
     return ogpMainList;
   }
 
@@ -109,35 +118,35 @@ class SetupController with ChangeNotifier {
     String? baseUrl = await Preferences.init().then(
       (onValue) => onValue.getInternetAddress(),
     );
-    try {
-      final response = await http.get(
-        Uri.parse(
-          "${baseUrl! + ApiLinks.getogpdetailsingle}?branchcode=$branchcode&formno=$formno&srno=$srNo",
-        ),
-      );
+    // try {
+    final response = await http.get(
+      Uri.parse(
+        "${baseUrl! + ApiLinks.getogpdetailsingle}?branchcode=$branchcode&formno=$formno&srno=$srNo",
+      ),
+    );
 
-      if (response.statusCode == 200) {
-        final data = jsonDecode(response.body);
-        OgpDetailLocationListResponseModel responseData =
-            OgpDetailLocationListResponseModel.fromJson(
-              jsonDecode(response.body),
-            );
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text("API Response Received")));
-        print(data);
-        ogpLocationListData = responseData.formdata;
-        notifyListeners();
-        return responseData.formdata;
-      } else {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(const SnackBar(content: Text("API Error")));
-      }
-    } catch (e) {
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      OgpDetailLocationListResponseModel responseData =
+          OgpDetailLocationListResponseModel.fromJson(
+            jsonDecode(response.body),
+          );
       ScaffoldMessenger.of(
         context,
-      ).showSnackBar(SnackBar(content: Text("Error: $e")));
+      ).showSnackBar(SnackBar(content: Text("API Response Received")));
+      print(data);
+      ogpLocationListData = responseData.formdata;
+      notifyListeners();
+      return responseData.formdata;
+    } else {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text("API Error")));
     }
+    // } catch (e) {
+    //   ScaffoldMessenger.of(
+    //     context,
+    //   ).showSnackBar(SnackBar(content: Text("Error: $e")));
+    // }
   }
 }

@@ -52,19 +52,16 @@ class _DashboardScreenState extends State<DashboardScreen> {
               itemBuilder: (BuildContext context, int index) {
                 return GestureDetector(
                   onTap: () async {
-                    Utils.showLoadingDialog(context);
-                    final cont = Provider.of<SetupController>(
-                      context,
-                      listen: false,
-                    );
-                    final apiResponseModel = await cont.getOgpMainList(context);
-                    Navigator.pop(context);
+                    // Utils.showLoadingDialog(context);
+                    // final cont = Provider.of<SetupController>(
+                    //   context,
+                    //   listen: false,
+                    // );
+                    // final apiResponseModel = await cont.getOgpMainList(context);
+                    // Navigator.pop(context);
                     Navigator.push(
                       context,
-                      MaterialPageRoute(
-                        builder: (_) =>
-                            OgpMainListScreen(response: apiResponseModel),
-                      ),
+                      MaterialPageRoute(builder: (_) => OgpMainListScreen()),
                     );
                   },
                   child: Padding(

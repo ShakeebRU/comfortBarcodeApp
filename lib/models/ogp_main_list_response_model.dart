@@ -93,7 +93,7 @@ class OgpMainModel {
     vehicleTimeIn = null;
     vehicleDateOut = json['vehicleDateOut'];
     vehicleTimeOut = json['vehicleTimeOut'];
-    remarks = json['remarks'];
+    remarks = json['remarks'] ?? "";
     userId = json['userId'];
     addDateTime = json['addDateTime'];
     status = json['status'];
@@ -105,8 +105,8 @@ class OgpMainModel {
     isClosed = null;
     ogpType = json['ogpType'];
     ofd = json['ofd'];
-    isYarnDyedContract = json['isYarnDyedContract'];
-    isKnittingContract = json['isKnittingContract'];
+    isYarnDyedContract = json['isYarnDyedContract'] ?? 0;
+    isKnittingContract = json['isKnittingContract'] ?? 0;
   }
 
   Map<String, dynamic> toJson() {

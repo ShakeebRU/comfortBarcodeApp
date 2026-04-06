@@ -84,13 +84,13 @@ class OgpDetailDataModel {
     required this.itemDescription,
     required this.ogpLocationList,
   });
-  late final int branchCode;
-  late final int formNo;
+  late final dynamic branchCode;
+  late final dynamic formNo;
   late final String itemCode;
-  late final int srNo;
-  late final int unitCode;
+  late final dynamic srNo;
+  late final dynamic unitCode;
   late final double qty;
-  late final int woNumber;
+  late final dynamic woNumber;
   late final String purposeID;
   late final Null grnNo;
   late final Null remarks;
@@ -101,27 +101,27 @@ class OgpDetailDataModel {
   late final String locationName;
   late final Null retentionDate;
   late final Null departmentName;
-  late final int fKIssuanceID;
+  late final dynamic fKIssuanceID;
   late final Null lotNumber;
   late final Null yarnDemandType;
-  late final int yarnID;
+  late final dynamic yarnID;
   late final Null purpose;
-  late final int bags;
+  late final dynamic bags;
   late final Null noOfCones;
-  late final int coneWeight;
-  late final int coneTareWeight;
-  late final int bagTareWeight;
-  late final int grossWeight;
-  late final int packingWeight;
-  late final int lossWeight;
-  late final int netWeight;
-  late final int actualWeight;
+  late final dynamic coneWeight;
+  late final dynamic coneTareWeight;
+  late final dynamic bagTareWeight;
+  late final dynamic grossWeight;
+  late final dynamic packingWeight;
+  late final dynamic lossWeight;
+  late final dynamic netWeight;
+  late final dynamic actualWeight;
   late final Null cflLotNo;
   late final Null yarnLotRef;
   late final Null productionDate;
   late final Null paperTip;
   late final Null computerName;
-  late final int ppCRecordLine;
+  late final dynamic ppCRecordLine;
   late final String masterLocationID;
   late final Null assetCode;
   late final Null storeCode;
@@ -129,21 +129,21 @@ class OgpDetailDataModel {
   late final Null demandSrNo;
   late final Null demandQty;
   late final Null planQty;
-  late final int colorCode;
+  late final dynamic colorCode;
   late final Null colorName;
   late final Null reprocessID;
-  late final int contractFormNo;
-  late final int contractSrNo;
-  late final int yarnDemandFormNo;
-  late final int yarnDemandSrNo;
+  late final dynamic contractFormNo;
+  late final dynamic contractSrNo;
+  late final dynamic yarnDemandFormNo;
+  late final dynamic yarnDemandSrNo;
   late final Null yarnDyeingContractNo;
   late final Null yarnDyeingContractSrNo;
   late final Null yarnTwistContractNo;
   late final Null yarnTwistContractSrNo;
   late final Null cottonType;
   late final Null yarnType;
-  late final int scannedBags;
-  late final int scannedWeight;
+  late final dynamic scannedBags;
+  late final dynamic scannedWeight;
   late final String itemDescription;
   late final List<OgpLocationList> ogpLocationList;
 
@@ -207,7 +207,7 @@ class OgpDetailDataModel {
     cottonType = null;
     yarnType = null;
     scannedBags = json['scannedBags'];
-    scannedWeight = json['scannedWeight'];
+    scannedWeight = double.parse("${json['scannedWeight']}" ?? "0");
     itemDescription = json['itemDescription'];
     ogpLocationList = List.from(
       json['ogpLocationList'],
@@ -297,17 +297,17 @@ class OgpLocationList {
     required this.packingID,
     this.barcode,
   });
-  late final int branchCode;
-  late final int ogpLocationID;
+  late final dynamic branchCode;
+  late final dynamic ogpLocationID;
   late final String locationCode;
-  late final int ogpFormNo;
-  late final int ogpSrNo;
-  late final int storeCode;
+  late final dynamic ogpFormNo;
+  late final dynamic ogpSrNo;
+  late final dynamic storeCode;
   late final String itemCode;
-  late final int qty;
-  late final int colorCode;
+  late final dynamic qty;
+  late final dynamic colorCode;
   late final String colorName;
-  late final int packingID;
+  late final dynamic packingID;
   late final Null barcode;
 
   OgpLocationList.fromJson(Map<String, dynamic> json) {
