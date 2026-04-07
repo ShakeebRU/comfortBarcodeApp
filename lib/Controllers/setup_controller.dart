@@ -25,20 +25,19 @@ class SetupController with ChangeNotifier {
     Uri uri = Uri.parse(
       "${baseUrl!}${ApiLinks.getogpmainlist}?partyname=$partyName&formno=${formNo ?? 0}",
     );
-    // try {
-    http.Response response = await http.get(uri);
-    debugPrint("status code == ${response.statusCode}");
-    if (response.statusCode == 200) {
-      OgpMainListResponseModel responseData = OgpMainListResponseModel.fromJson(
-        jsonDecode(response.body),
-      );
-      ogpMainList = responseData.listdata;
-      print(ogpMainList.length);
-      notifyListeners();
+    try {
+      http.Response response = await http.get(uri);
+      debugPrint("status code == ${response.statusCode}");
+      if (response.statusCode == 200) {
+        OgpMainListResponseModel responseData =
+            OgpMainListResponseModel.fromJson(jsonDecode(response.body));
+        ogpMainList = responseData.listdata;
+        print(ogpMainList.length);
+        notifyListeners();
+      }
+    } catch (error) {
+      print("error : $error");
     }
-    // } catch (error) {
-    //   print("error : $error");
-    // }
     return ogpMainList;
   }
 
@@ -81,9 +80,12 @@ class SetupController with ChangeNotifier {
       (onValue) => onValue.getInternetAddress(),
     );
     try {
+      print(
+        "${baseUrl! + ApiLinks.getbarcodedetail}?barcode=$barcode&itemcode=$itemCode",
+      );
       final response = await http.get(
         Uri.parse(
-          "${baseUrl! + ApiLinks.getbarcodedetail}?barcode=$barcode&itemcode=$itemCode",
+          "${baseUrl + ApiLinks.getbarcodedetail}?barcode=$barcode&itemcode=$itemCode",
         ),
       );
 
@@ -118,35 +120,38 @@ class SetupController with ChangeNotifier {
     String? baseUrl = await Preferences.init().then(
       (onValue) => onValue.getInternetAddress(),
     );
-    // try {
-    final response = await http.get(
-      Uri.parse(
+    try {
+      print(
         "${baseUrl! + ApiLinks.getogpdetailsingle}?branchcode=$branchcode&formno=$formno&srno=$srNo",
-      ),
-    );
+      );
+      final response = await http.get(
+        Uri.parse(
+          "${baseUrl + ApiLinks.getogpdetailsingle}?branchcode=$branchcode&formno=$formno&srno=$srNo",
+        ),
+      );
 
-    if (response.statusCode == 200) {
-      final data = jsonDecode(response.body);
-      OgpDetailLocationListResponseModel responseData =
-          OgpDetailLocationListResponseModel.fromJson(
-            jsonDecode(response.body),
-          );
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        OgpDetailLocationListResponseModel responseData =
+            OgpDetailLocationListResponseModel.fromJson(
+              jsonDecode(response.body),
+            );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text("API Response Received")));
+        print(data);
+        ogpLocationListData = responseData.formdata;
+        notifyListeners();
+        return responseData.formdata;
+      } else {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(const SnackBar(content: Text("API Error")));
+      }
+    } catch (e) {
       ScaffoldMessenger.of(
         context,
-      ).showSnackBar(SnackBar(content: Text("API Response Received")));
-      print(data);
-      ogpLocationListData = responseData.formdata;
-      notifyListeners();
-      return responseData.formdata;
-    } else {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(const SnackBar(content: Text("API Error")));
+      ).showSnackBar(SnackBar(content: Text("Error: $e")));
     }
-    // } catch (e) {
-    //   ScaffoldMessenger.of(
-    //     context,
-    //   ).showSnackBar(SnackBar(content: Text("Error: $e")));
-    // }
   }
 }

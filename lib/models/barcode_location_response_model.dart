@@ -137,7 +137,7 @@ class Subdata {
     formNo = json['formNo'];
     srNo = json['srNo'];
     itemCode = json['itemCode'];
-    qty = json['qty'];
+    qty = double.parse("${json['qty']}");
     storeCode = json['storeCode'];
     woNo = json['woNo'];
     status = json['status'];

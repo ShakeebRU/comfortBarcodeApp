@@ -44,7 +44,9 @@ class FunctionalityController with ChangeNotifier {
       debugPrint(
         "${baseUrl! + ApiLinks.savebarcodelocation}?userid=${user!.logindata.userId}",
       );
-      Uri uri = Uri.parse(ApiLinks.savebarcodelocation);
+      Uri uri = Uri.parse(
+        "${baseUrl + ApiLinks.savebarcodelocation}?userid=${user.logindata.userId}",
+      );
       final Map<String, dynamic> body = {
         "branchCode": branchCode,
         "ogpLocationID": ogpLocationID,
