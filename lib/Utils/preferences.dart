@@ -57,6 +57,22 @@ class Preferences {
     shared.remove('baseUrl');
   }
 
+  String? getAppUrl() {
+    if (shared.getString("apiUrl") != null) {
+      var str = shared.getString("apiUrl");
+      return str!;
+    }
+    return "";
+  }
+
+  Future saveAppUrl(String url) async {
+    shared.setString("apiUrl", url);
+  }
+
+  Future deleteAppUrl() async {
+    shared.remove('apiUrl');
+  }
+
   static Future<Preferences> init() =>
       SharedPreferences.getInstance().then((value) => Preferences(value));
 }

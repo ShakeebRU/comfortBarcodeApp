@@ -33,7 +33,10 @@ class _LoginPageState extends State<LoginPage> {
     if (baseUrl != null && baseUrl.isNotEmpty) {
       wanController.text = baseUrl;
     } else {
-      wanController.text = ApiLinks.base;
+      String? baseUrl = await Preferences.init().then(
+        (onValue) => onValue.getAppUrl(),
+      );
+      wanController.text = baseUrl ?? "";
     }
   }
 

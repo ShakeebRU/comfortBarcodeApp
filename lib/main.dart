@@ -5,11 +5,13 @@ import 'package:provider/provider.dart';
 import 'Controllers/auth_controller.dart';
 import 'Controllers/functionality_controller.dart';
 import 'Controllers/setup_controller.dart';
+import 'Utils/appconfig.dart';
 import 'constants/constants.dart';
 import 'views/splash.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await AppConfig.load();
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
   runApp(
